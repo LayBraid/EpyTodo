@@ -1,0 +1,23 @@
+DROP DATABASE IF EXISTS epytodo;
+CREATE DATABASE epytodo;
+
+use epytodo;
+
+CREATE TABLE IF NOT EXISTS user (
+    id INT NOT NULL AUTO_INCREMENT KEY,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    name TEXT NOT NULL,
+    firstname TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS todo (
+    id INT NOT NULL AUTO_INCREMENT KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    due_time DATETIME NOT NULL,
+    status TEXT DEFAULT "not started",
+    user_id INT UNSIGNED NOT NULL
+);

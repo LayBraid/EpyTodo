@@ -1,25 +1,29 @@
 const express = require('express')
-const { format } = require('express/lib/response')
 const app = express()
-const port = 3000
+const port = 8080
+const db = require('./config/db')
 
 app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify({'msg':'Hello World!'}))
 })
 
-app.get('/name/:name', (req, res) => {
-    res.send('Hello ' + req.params.name + '!')
+app.get('/user', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    db.query("SELECT * FROM user", function (err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+        res.send(result)
+    });
 })
 
-app.get('/date/', (req, res) => {
-    var today = new Date()
-    var dd = String(today.getDate())
-    var mm = String(today.getMonth() + 1)
-    var yyyy = today.getFullYear()
-    res.send(yyyy+'-'+mm+'-'+dd)
+app.post('/user', (req, res) => {
+    db.query("INSERT INTO user (id, email, password, name, firstname) values (1, 'agherasie@epitech.eu', 'pass', 'gherasie', 'alex');", function (err, result, fields) {
+        if (err) throw err;
+        res.send(result);
+    })
 })
 
 app.listen(port, () => {
-    console.log('Example app listening on port ${}')
+    console.log('Example app listening on port ' + port)
 })

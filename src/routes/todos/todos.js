@@ -14,6 +14,9 @@ async function addTodoPlayer(req, res) {
     const due_time = req.body.due_time;
     const user_id = req.body.user_id;
     const status = req.body.status;
+
+    if (title === undefined || description === undefined || due_time === undefined || user_id === undefined || status === undefined)
+        res.status(400).json({error: "Bad request"})
     if (await checkTodoExist(title) === false) {
         if (await addTodo(title, description, due_time, user_id, status)) {
             res.status(200).json({success: "Todo added"})
@@ -41,6 +44,11 @@ async function getAllTodosList(req, res) {
 
 async function delTodoById(req, res) {
     const id = req.params.id;
+
+    if (id === undefined)
+        res.status(400).json({error: "Bad request"})
+    if (await checkTodoExistId(id) === false)
+        res.status(400).json({error: "Todo not exist"})
     if (await delTodoId(id))
         res.status(200).json({success: "Todo deleted"})
     else
@@ -49,6 +57,9 @@ async function delTodoById(req, res) {
 
 async function getTodoById(req, res) {
     const id = req.params.id;
+
+    if (id === undefined)
+        res.status(400).json({error: "Bad request"})
     const todoId = await getTodoId(id);
     if (todoId.length > 0) {
         res.status(200).json(todoId)
@@ -64,12 +75,13 @@ async function updateTodoById(req, res) {
     const due_time = req.body.due_time;
     const user_id = req.body.user_id;
     const status = req.body.status;
-    const promise = await updateTodoId(id, title, description, due_time, user_id, status);
-    if (promise) {
+
+    if (id === undefined || title === undefined || description === undefined || due_time === undefined || user_id === undefined || status === undefined)
+        res.status(400).json({error: "Bad request"})
+    if (await updateTodoId(id, title, description, due_time, user_id, status))
         res.status(200).json({success: "Todo updated"})
-    } else {
+    else
         res.status(400).json({error: "Todo not updated"})
-    }
 }
 
 module.exports = {

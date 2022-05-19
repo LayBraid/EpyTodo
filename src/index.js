@@ -6,6 +6,7 @@ const user = require('./routes/user/user.js')
 const todo = require('./routes/todos/todos.js')
 
 const auth = require('./middleware/auth');
+const checkFound = require('./middleware/notFound');
 
 var bodyParser = require('body-parser')
 
@@ -20,9 +21,9 @@ app.delete('/user/:id', auth, user.deleteUser)
 
 app.post('/todos', auth, todo.addTodoPlayer)
 app.get('/todos', auth, todo.getAllTodosList)
-app.delete('/todos/:id', auth, todo.delTodoById)
-app.get('/todos/:id', auth, todo.getTodoById)
-app.put('/todos/:id', auth, todo.updateTodoById)
+app.delete('/todos/:id', auth, checkFound, todo.delTodoById)
+app.get('/todos/:id', auth, checkFound, todo.getTodoById)
+app.put('/todos/:id', auth, checkFound, todo.updateTodoById)
 
 app.listen(port, () => {
     console.log('Example app listening on port ' + port)

@@ -3,9 +3,6 @@ CREATE DATABASE epytodo;
 
 use epytodo;
 
-ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'password';
-flush privileges;
-
 CREATE TABLE IF NOT EXISTS user (
     id int NOT NULL AUTO_INCREMENT KEY,
     email varchar(255) NOT NULL UNIQUE,
@@ -21,6 +18,6 @@ CREATE TABLE IF NOT EXISTS todo (
     description varchar(255) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     due_time DATETIME NOT NULL,
-    status varchar(255) DEFAULT "not started",
+    status enum('no_started','todo','doing','done') NOT NULL DEFAULT 'no_started',
     user_id int UNSIGNED NOT NULL
 );

@@ -14,6 +14,22 @@ async function addUser(name, mail, firstname, password) {
     }
 }
 
+async function getAllUsersDb() {
+    return (await (await db).execute('SELECT * FROM `user`'))[0];
+}
+
+async function getUserByIdDb(id) {
+    let param = "id";
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(id)) {
+        if (await checkUserExist(id) === true) {
+            param = "email";
+            id = '\'' + id + '\''
+        }
+    }
+    const sql = 'SELECT * FROM `user` WHERE ' + param + ' = ' + id
+    return (await (await db).execute(sql))[0];
+}
+
 async function deleteUserDb(id, res) {
     db.execute('DELETE FROM `user` WHERE id = ?', [id], function(err, results, fields) {
         if (err) throw err;
@@ -24,5 +40,7 @@ async function deleteUserDb(id, res) {
 module.exports = {
     addUser,
     deleteUserDb,
-    checkUserExist
+    checkUserExist,
+    getAllUsersDb,
+    getUserByIdDb,
 }

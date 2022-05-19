@@ -1,4 +1,4 @@
-const {addUser, deleteUserDb, checkUserExist} = require("./user.query");
+const {addUser, deleteUserDb, checkUserExist, getAllUsersDb, getUserByIdDb} = require("./user.query");
 
 async function register(rec, res) {
     const name = rec.body.name
@@ -20,6 +20,54 @@ async function register(rec, res) {
     }
 }
 
+async function getAllUsers(req, res) {
+    try {
+        const allUsers = await getAllUsersDb();
+        if (allUsers.length > 0) {
+            res.status(200).json(allUsers)
+        } else {
+            res.status(400).json({error: "User doesn't exist"})
+        }
+    } catch (e) {
+        res.status(500).json({error: "Internal Server Error"})
+    }
+
+}
+
+async function getUserById(req, res) {
+    const id = req.params.id;
+
+    if (id === undefined)
+        res.status(400).json({error: "Bad request"})
+    try {
+        const user = await getUserByIdDb(id);
+        if (user.length > 0) {
+            res.status(200).json(user)
+        } else {
+            res.status(400).json({error: "User doesn't exist"})
+        }
+    } catch (e) {
+        res.status(500).json({error: "Internal Server Error"})
+    }
+}
+
+async function getUserById(req, res) {
+    const id = req.params.id;
+
+    if (id === undefined)
+        res.status(400).json({error: "Bad request"})
+    try {
+        const user = await getUserByIdDb(id);
+        if (user.length > 0) {
+            res.status(200).json(user)
+        } else {
+            res.status(400).json({error: "User doesn't exist"})
+        }
+    } catch (e) {
+        res.status(500).json({error: "Internal Server Error"})
+    }
+}
+
 async function deleteUser(rec, res) {
     const id = rec.params.id;
     await deleteUserDb(id, res)
@@ -27,5 +75,7 @@ async function deleteUser(rec, res) {
 
 module.exports = {
     register,
-    deleteUser
+    deleteUser,
+    getAllUsers,
+    getUserById,
 }

@@ -13,7 +13,11 @@ app.use(bodyParser.json())
 
 app.post('/register', user.register)
 
-app.delete('/user/:id', user.deleteUser)
+app.get('/user', user.getAllUsers)
+
+app.get('/users/:id', user.getUserById)
+
+app.delete('/users/:id', user.deleteUser)
 
 app.post('/todos', todo.addTodoPlayer)
 

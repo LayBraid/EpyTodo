@@ -1,4 +1,4 @@
-const {addTodo, checkTodoExist, oneTodoIsCreate, getAllTodos, checkTodoExistById, delTodoId} = require('./todos.query');
+const {addTodo, checkTodoExist, oneTodoIsCreate, getAllTodos, checkTodoExistById, delTodoId, getTodoId} = require('./todos.query');
 
 async function addTodoPlayer(rec, res){
     const title = rec.body.title;
@@ -38,8 +38,18 @@ async function delTodoById(rec, res){
     }
 }
 
+async function getTodoById(rec, res){
+    const id = rec.params.id;
+    if (await checkTodoExistById(id) === false) {
+        res.status(400).json({error: "Todo not exist"})
+    } else {
+        return getTodoId(id)
+    }
+}
+
 module.exports = {
     addTodoPlayer,
     getAllTodosList,
-    delTodoById
+    delTodoById,
+    getTodoById
 }

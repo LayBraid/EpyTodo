@@ -38,11 +38,20 @@ async function delTodoId(id) {
     }
 }
 
+async function getTodoId(id) {
+    try {
+        return (await (await db).execute('SELECT * FROM `todo` WHERE id = ?', [id]))[0];
+    } catch (e) {
+        return "500: Internal Server Error";
+    }
+}
+
 module.exports = {
     addTodo,
     checkTodoExist,
     oneTodoIsCreate,
     getAllTodos,
     checkTodoExistById,
-    delTodoId
+    delTodoId,
+    getTodoId
 }

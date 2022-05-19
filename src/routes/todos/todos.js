@@ -7,7 +7,11 @@ async function addTodoPlayer(rec, res){
     const user_id = rec.body.user_id;
     const status = rec.body.status;
     if (await checkTodoExist(title)) {
-        await addTodo(title, description, due_time, user_id, status, res);
+        if (due_time.type === "date") {
+            await addTodo(title, description, due_time, user_id, status, res);
+        } else {
+            res.status(400).json({error: "Bad date"})
+        }
     } else {
         res.status(400).json({error: "Todo already exist"})
     }

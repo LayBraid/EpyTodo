@@ -2,7 +2,8 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-const register = require('./routes/user/user.js')
+const user = require('./routes/user/user.js')
+const todo = require('./routes/todos/todos.js')
 
 var bodyParser = require('body-parser')
 
@@ -10,9 +11,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
 
-app.post('/register', register.register)
+app.post('/register', user.register)
 
-app.delete('/user/:id', register.deleteUser)
+app.delete('/user/:id', user.deleteUser)
+
+app.post('/todos', todo.addTodoPlayer)
 
 /*app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'application/json');

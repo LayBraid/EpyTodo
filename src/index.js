@@ -16,14 +16,27 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
 
-app.post('/register', auth, user.register)
-app.delete('/user/:id', auth, user.deleteUser)
+app.post('/register', user.register)
 
-app.post('/todos', auth, todo.addTodoPlayer)
-app.get('/todos', auth, todo.getAllTodosList)
-app.delete('/todos/:id', auth, checkFound, todo.delTodoById)
-app.get('/todos/:id', auth, checkFound, todo.getTodoById)
-app.put('/todos/:id', auth, checkFound, todo.updateTodoById)
+app.get('/user', user.getAllUsers)
+
+app.get('/user/todos', user.getUserTodos)
+
+app.get('/users/:id', user.getUserById)
+
+app.delete('/users/:id', user.deleteUser)
+
+app.post('/todos', todo.addTodoPlayer)
+
+app.put('/users/:id', user.updateUser)
+
+app.get('/todos', todo.getAllTodosList)
+
+app.delete('/todos/:id', todo.delTodoById)
+
+app.get('/todos/:id', todo.getTodoById)
+
+app.put('/todos/:id', todo.updateTodoById)
 
 app.listen(port, () => {
     console.log('Example app listening on port ' + port)

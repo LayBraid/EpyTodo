@@ -1,4 +1,4 @@
-const {addTodo, checkTodoExist, oneTodoIsCreate, getAllTodos, checkTodoExistById, delTodoId, getTodoId} = require('./todos.query');
+const {addTodo, checkTodoExist, oneTodoIsCreate, getAllTodos, checkTodoExistById, delTodoId, getTodoId, updateTodoId} = require('./todos.query');
 
 async function addTodoPlayer(rec, res){
     const title = rec.body.title;
@@ -47,9 +47,28 @@ async function getTodoById(rec, res){
     }
 }
 
+async function updateTodoById(rec, res){
+    const id = rec.params.id;
+    const title = rec.body.title;
+    const description = rec.body.description;
+    const due_time = rec.body.due_time;
+    const user_id = rec.body.user_id;
+    const status = rec.body.status;
+    if (await checkTodoExistById(id) === false) {
+        res.status(400).json({error: "Todo not exist"})
+    } else {
+        if (await updateTodoId(id, title, description, due_time, user_id, status)) {
+            res.status(200).json({success: "Todo updated"})
+        } else {
+            res.status(400).json({error: "Todo not updated"})
+        }
+    }
+}
+
 module.exports = {
     addTodoPlayer,
     getAllTodosList,
     delTodoById,
-    getTodoById
+    getTodoById,
+    updateTodoById
 }

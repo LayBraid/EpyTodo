@@ -23,6 +23,8 @@ app.delete('/todos/:id', todo.delTodoById)
 
 app.get('/todos/:id', todo.getTodoById)
 
+app.put('/todos/:id', todo.updateTodoById)
+
 /*app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify({'msg':'Hello World!'}))

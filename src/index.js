@@ -4,7 +4,15 @@ const port = 3000
 
 const register = require('./routes/user/user.js')
 
+var bodyParser = require('body-parser')
+
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use(bodyParser.json())
+
 app.post('/register', register.register)
+
+app.delete('/user/:id', register.deleteUser)
 
 /*app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'application/json');

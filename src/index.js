@@ -4,11 +4,10 @@ const port = 3000
 
 const user = require('./routes/user/user.js')
 const todo = require('./routes/todos/todos.js')
-
-const auth = require('./middleware/auth');
-const checkFound = require('./middleware/notFound');
+const auth = require('./routes/auth/auth.js')
 
 var bodyParser = require('body-parser')
+const { use } = require('express/lib/router')
 
 app.use(express.raw());
 
@@ -16,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
 
-app.post('/register', user.register)
+app.post('/register', auth.register)
 
 app.get('/user', user.getAllUsers)
 

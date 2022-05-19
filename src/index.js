@@ -17,6 +17,10 @@ app.delete('/user/:id', user.deleteUser)
 
 app.post('/todos', todo.addTodoPlayer)
 
+app.get('/todos', todo.getAllTodosList)
+
+app.delete('/todos/:id', todo.delTodoById)
+
 /*app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify({'msg':'Hello World!'}))

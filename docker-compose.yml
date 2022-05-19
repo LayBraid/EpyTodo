@@ -1,12 +1,12 @@
 version: "3"
 services:
   db:
-    image: "mysql:8.0.17"
+    image: "mysql"
     environment:
-      MYSQL_DATABASE: epytodo
-      MYSQL_ROOT_PASSWORD: password
+        MYSQL_ROOT_PASSWORD: "password"
+        MYSQL_DATABASE: "epytodo"
     ports:
-      - "3308:3306"
+      - "3306:3306"
     volumes:
       - ./epytodo.sql:/docker-entrypoint-initdb.d/schema.sql:ro
     restart: on-failure

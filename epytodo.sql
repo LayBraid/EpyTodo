@@ -3,6 +3,9 @@ CREATE DATABASE epytodo;
 
 use epytodo;
 
+ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'password';
+flush privileges;
+
 CREATE TABLE IF NOT EXISTS user (
     id int NOT NULL AUTO_INCREMENT KEY,
     email varchar(255) NOT NULL UNIQUE,

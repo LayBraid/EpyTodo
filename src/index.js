@@ -7,6 +7,8 @@ const todo = require('./routes/todos/todos.js')
 
 var bodyParser = require('body-parser')
 
+app.use(express.raw());
+
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())

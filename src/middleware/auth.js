@@ -9,8 +9,7 @@ module.exports = (req, res, next) => {
     if (parts.length !== 2) {
         return res.status(401).json({error: 'Token error'});
     }
-    const [scheme, token] = parts;
-    jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    jwt.verify(parts, process.env.SECRET, (err, decoded) => {
         if (err) {
             return res.status(401).json({error: 'Token invalid'});
         }

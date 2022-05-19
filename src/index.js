@@ -5,7 +5,7 @@ const port = 3000
 const user = require('./routes/user/user.js')
 const todo = require('./routes/todos/todos.js')
 
-const auth = require('../../middleware/auth');
+const auth = require('./middleware/auth');
 
 var bodyParser = require('body-parser')
 

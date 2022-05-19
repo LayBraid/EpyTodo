@@ -15,11 +15,15 @@ app.post('/register', user.register)
 
 app.get('/user', user.getAllUsers)
 
+app.get('/user/todos', user.getUserTodos)
+
 app.get('/users/:id', user.getUserById)
 
 app.delete('/users/:id', user.deleteUser)
 
 app.post('/todos', todo.addTodoPlayer)
+
+app.put('/users/:id', user.updateUser)
 
 app.get('/todos', todo.getAllTodosList)
 

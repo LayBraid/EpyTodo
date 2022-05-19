@@ -5,7 +5,11 @@ async function checkTodoExistById(id) {
 }
 
 async function oneTodoIsCreate() {
-    return (await (await db).execute('SELECT * FROM `todo` WHERE status = ?', ['create']))[0].length > 0;
+    try {
+        return (await (await db).execute('SELECT * FROM `todo` WHERE status = ?', [0]))[0].length > 0;
+    } catch (e) {
+        return false;
+    }
 }
 
 async function checkTodoExist(title) {

@@ -1,11 +1,11 @@
 const {addTodo, checkTodoExist, oneTodoIsCreate, getAllTodos, checkTodoExistById, delTodoId, getTodoId, updateTodoId} = require('./todos.query');
 
-async function addTodoPlayer(rec, res){
-    const title = rec.body.title;
-    const description = rec.body.description;
-    const due_time = rec.body.due_time;
-    const user_id = rec.body.user_id;
-    const status = rec.body.status;
+async function addTodoPlayer(req, res){
+    const title = req.body.title;
+    const description = req.body.description;
+    const due_time = req.body.due_time;
+    const user_id = req.body.user_id;
+    const status = req.body.status;
     if (await checkTodoExist(title) === false) {
         if (await addTodo(title, description, due_time, user_id, status)) {
             res.status(200).json({success: "Todo added"})
@@ -17,7 +17,7 @@ async function addTodoPlayer(rec, res){
     }
 }
 
-async function getAllTodosList(rec, res){
+async function getAllTodosList(req, res){
     if (await oneTodoIsCreate() === false) {
         res.status(400).json({error: "No todo"})
     } else {
@@ -25,8 +25,8 @@ async function getAllTodosList(rec, res){
     }
 }
 
-async function delTodoById(rec, res){
-    const id = rec.params.id;
+async function delTodoById(req, res){
+    const id = req.params.id;
     if (await checkTodoExistById(id) === false) {
         res.status(400).json({error: "Todo not exist"})
     } else {
@@ -38,22 +38,21 @@ async function delTodoById(rec, res){
     }
 }
 
-async function getTodoById(rec, res){
-    const id = rec.params.id;
-    if (await checkTodoExistById(id) === false) {
-        res.status(400).json({error: "Todo not exist"})
-    } else {
+async function getTodoById(req, res){
+    const id = req.params.id;
+    if (await checkTodoExistById(id))
         return getTodoId(id)
-    }
+    else
+        res.status(400).json({error: "Todo not exist"})
 }
 
-async function updateTodoById(rec, res){
-    const id = rec.params.id;
-    const title = rec.body.title;
-    const description = rec.body.description;
-    const due_time = rec.body.due_time;
-    const user_id = rec.body.user_id;
-    const status = rec.body.status;
+async function updateTodoById(req, res){
+    const id = req.params.id;
+    const title = req.body.title;
+    const description = req.body.description;
+    const due_time = req.body.due_time;
+    const user_id = req.body.user_id;
+    const status = req.body.status;
     if (await checkTodoExistById(id) === false) {
         res.status(400).json({error: "Todo not exist"})
     } else {

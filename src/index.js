@@ -4,8 +4,9 @@ const port = 3000
 
 const user = require('./routes/user/user.js')
 const todo = require('./routes/todos/todos.js')
+const auth = require('./routes/auth/auth.js')
 
-const auth = require('./middleware/auth');
+const auth_check = require('./middleware/auth');
 const {notFoundTodo} = require('./middleware/notFound');
 
 var bodyParser = require('body-parser')
@@ -16,14 +17,22 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
 
-app.post('/register', auth, user.register)
-app.delete('/user/:id', auth, user.deleteUser)
+//Todo login, get user todo and token
 
-app.post('/todos', auth, todo.addTodoPlayer)
-app.get('/todos', auth, todo.getAllTodosList)
-app.delete('/todos/:id', auth, notFoundTodo, todo.delTodoById)
-app.get('/todos/:id', auth, notFoundTodo, todo.getTodoById)
-app.put('/todos/:id', auth, notFoundTodo, todo.updateTodoById)
+//app.post('/login', auth.login)
+app.post('/register', auth_check, auth.register)
+
+app.put('/user/:id', auth_check, user.updateUser)
+app.get('/user/:id', auth_check, user.getUserById)
+app.delete('/user/:id', auth_check, user.deleteUser)
+app.get('/user', auth_check, user.getCurrentUser)
+//app.get('/user/todos/', auth_check, user.getTodoCurrentUser)
+
+app.post('/todos', auth_check, todo.addTodoPlayer)
+app.get('/todos', auth_check, todo.getAllTodosList)
+app.delete('/todos/:id', auth_check, notFoundTodo, todo.delTodoById)
+app.get('/todos/:id', auth_check, notFoundTodo, todo.getTodoById)
+app.put('/todos/:id', auth_check, notFoundTodo, todo.updateTodoById)
 
 app.listen(port, () => {
     console.log('Example app listening on port ' + port)

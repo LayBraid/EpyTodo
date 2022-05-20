@@ -1,24 +1,21 @@
 const {getTodoId} = require("../routes/todos/todos.query");
+const {getUserById} = require("../routes/user/user.query")
 const db = require('../config/db')
 
-async function user(req, res, next) {
-    const id = req.params.id;
-
-    if (id === undefined)
-        res.status(400).json({error: "Bad request"})
-    try {
-        let sql = "SELECT * FROM user WHERE id = " + id;
-        const user = (await (await db).execute(sql))[0]
-        if (user.length > 0) {
-            next();
+async function userExists(req, res, next) {
+    if (req.id === undefined) {
+        if (req.params.id === undefined) {
+            return res.status(400).json({error: "Bad request"})
         } else {
-            res.status(404).json({error: "User not found"})
+            req.id = req.params.id
         }
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({error: "Internal Server Error"})
     }
-    next();
+    const user = await getUserById(req.id);
+    if (user.length > 0) {
+        next();
+    } else {
+        return res.status(404).json({error: "User doesn't exist"})
+    }
 }
 
 async function notFoundTodo(req, res, next) {
@@ -35,5 +32,5 @@ async function notFoundTodo(req, res, next) {
 
 module.exports = {
     notFoundTodo,
-    user
+    userExists,
 }

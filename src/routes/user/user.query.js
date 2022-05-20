@@ -20,9 +20,8 @@ async function addUser(name, mail, firstname, password) {
     }
 }
 
-async function updateUser(res, name, mail, firstname, password, id) {
+async function updateUser(name, mail, firstname, password, id) {
     await (await db).execute('UPDATE `user` SET name = ?, email = ?, firstname = ?, password = ? WHERE id = ?', [name, mail, firstname, password, id]);
-    res.status(200).json({success: "User updated"})
 }
 
 async function getUserTodos(id) {

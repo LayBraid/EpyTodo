@@ -1,22 +1,16 @@
 const {deleteUser, getAllUsers, getUserById, updateUser, checkUserExist} = require("./user.query");
 const {getTodoByUserId} = require("../todos/todos.query")
+const {userExists} = require("../../middleware/notFound")
 const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 
 async function user(app) {
-    app.get('/user', auth, async (req, res) => {
+    app.get('/user', auth, userExists, async (req, res) => {
         const user = await getUserById(req.id);
-        if (user.length > 0) {
-            res.status(200).json(user)
-        } else {
-            res.status(404).json({error: "User doesn't exist"})
-        }
+        res.status(200).json(user)
     });
 
-    app.get('/user/todos', auth, async (req, res) => {
-        if (checkUserExist(req.id) == false) {
-            res.status(404).json({error: "This user does not exist"});
-        }
+    app.get('/user/todos', userExists, auth, async (req, res) => {
         const todo = await getTodoByUserId(req.id);
         if (user.length > 0) {
             res.status(200).json(todo)
@@ -25,67 +19,35 @@ async function user(app) {
         }
     });
 
-    app.put('/user/:id', async (req, res) => {
+    app.put('/users/:id', userExists, auth, async (req, res) => {
         const id = req.params.id;
         const name = req.body.name
         const mail = req.body.email
         const firstname = req.body.firstname
         const password = req.body.password
-
-        if (id === undefined)
-            res.status(400).json({error: "Bad request"})
         try {
-            if (await updateUser(name, mail, firstname, password, id)) {
-                res.status(200).json({success: "User updated"})
-            } else {
-                res.status(404).json({error: "User doesn't exist"})
-            }
+            await updateUser(name, mail, firstname, password, id)
+            res.status(200).json({success: "User updated"})
         } catch (e) {
             res.status(500).json({error: "Internal Server Error"})
         }
     });
 
-    app.get('/users/all', async (req, res) => {
-        try {
-            const allUsers = await getAllUsers();
-            if (allUsers.length > 0) {
-                res.status(200).json(allUsers)
-            } else {
-                res.status(404).json({error: "There are no users yet !"})
-            }
-        } catch (e) {
-            res.status(500).json({error: "Internal Server Error"})
-        }
-    });
-
-    app.get('/users/:id', async (req, res) => {
+    app.get('/users/:id', userExists, auth, async (req, res) => {
         const id = req.params.id;
-
-        if (id === undefined)
-            res.status(400).json({error: "Bad request"})
         try {
             const user = await getUserById(id);
-            if (user.length > 0) {
-                res.status(200).json(user)
-            } else {
-                res.status(404).json({error: "User doesn't exist"})
-            }
+            res.status(200).json(user)
         } catch (e) {
             res.status(500).json({error: "Internal Server Error"})
         }
     });
 
-    app.delete('/users/:id', async (req, res) => {
+    app.delete('/users/:id', userExists, auth, async (req, res) => {
         const id = req.params.id;
-
-        if (id === undefined)
-            res.status(400).json({error: "Bad request"})
         try {
-            if (await deleteUser(id)) {
-                res.status(200).json({success: "User deleted"})
-            } else {
-                res.status(404).json({error: "User doesn't exist"})
-            }
+            await deleteUser(id)
+            res.status(200).json({success: "User deleted"})
         } catch (e) {
             res.status(500).json({error: "Internal Server Error"})
         }

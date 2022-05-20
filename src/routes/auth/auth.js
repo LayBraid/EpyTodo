@@ -26,7 +26,7 @@ async function auth(app) {
         const password = req.body.password
         const user = await getUserById(mail);
         if (user[0].password === password) {
-            const token = jwt.sign({email:mail, id:user[0].id}, process.env.SECRET, {expiresIn: '60s'});
+            const token = jwt.sign({email:mail, id:user[0].id}, process.env.SECRET, {expiresIn: '1h'});
             res.status(200).json({token})
         } else {
             res.status(400).json({error: "Wrong password"})

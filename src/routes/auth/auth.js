@@ -1,6 +1,7 @@
 const {addUser, checkUserExist} = require("../user/user.query");
 
-async function register(req, res)  {
+async function auth(app) {
+    app.post('/register', async function register(req, res) {
         const name = req.body.name
         const mail = req.body.email
         const firstname = req.body.firstname
@@ -18,8 +19,7 @@ async function register(req, res)  {
         } else {
             return ("510: Bad email address")
         }
+    });
 }
 
-module.exports = {
-    register
-}
+module.exports = auth

@@ -20,21 +20,21 @@ async function addUser(name, mail, firstname, password) {
     }
 }
 
-async function updateUserDb(res, name, mail, firstname, password, id) {
+async function updateUser(res, name, mail, firstname, password, id) {
     await (await db).execute('UPDATE `user` SET name = ?, email = ?, firstname = ?, password = ? WHERE id = ?', [name, mail, firstname, password, id]);
     res.status(200).json({success: "User updated"})
 }
 
-async function getUserTodosDb(id) {
+async function getUserTodos(id) {
     const sql = 'SELECT * FROM `todos` WHERE user_id = ' + id
     return (await (await db).execute(sql))[0];
 }
 
-async function getAllUsersDb() {
+async function getAllUsers() {
     return (await (await db).execute('SELECT * FROM `user`'))[0];
 }
 
-async function getUserByIdDb(id) {
+async function getUserById(id) {
     let param = "id";
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(id)) {
         if (await checkUserExist(id) === true) {
@@ -46,7 +46,7 @@ async function getUserByIdDb(id) {
     return (await (await db).execute(sql))[0];
 }
 
-async function deleteUserDb(id) {
+async function deleteUser(id) {
     if (await checkUserExist(id) === false) {
         return false;
     }
@@ -61,10 +61,10 @@ async function deleteUserDb(id) {
 
 module.exports = {
     addUser,
-    deleteUserDb,
+    deleteUser,
     checkUserExist,
-    getAllUsersDb,
-    getUserByIdDb,
-    updateUserDb,
-    getUserTodosDb,
+    getAllUsers,
+    getUserById,
+    updateUser,
+    getUserTodos,
 }

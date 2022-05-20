@@ -1,32 +1,27 @@
-const {deleteUser, getAllUsers, getUserById, updateUser, getUserTodos} = require("./user.query");
+const {deleteUser, getAllUsers, getUserById, updateUser, checkUserExist} = require("./user.query");
+const {getTodoByUserId} = require("../todos/todos.query")
 const jwt = require("jsonwebtoken");
+const auth = require("../../middleware/auth");
 
 async function user(app) {
-    app.get('/user', async (req, res) => {
-        const auth = req.headers.authorization;
-        if (!auth)
-            res.status(401).json({error: "Unauthorized"})
-        const parts = auth.split(' ');
-        if (parts.length !== 2) {
-            return res.status(401).json({error: 'Token error'});
+    app.get('/user', auth, async (req, res) => {
+        const user = await getUserById(req.id);
+        if (user.length > 0) {
+            res.status(200).json(user)
+        } else {
+            res.status(400).json({error: "User doesn't exist"})
         }
-        let decoded;
-        try {
-            const decoded = await jwt.verify(parts[1], process.env.SECRET);
-        } catch (e) {
-            return res.status(401).json({error: 'Token invalid'});
+    });
+
+    app.get('/user/todos', auth, async (req, res) => {
+        if (checkUserExist(req.id) == false) {
+            res.status(400).json({error: "This user does not exist"});
         }
-        if (decoded["id"] === req.user) {
-            try {
-                const user = await getUserById(decoded["id"]);
-                if (user.length > 0) {
-                    res.status(200).json(user)
-                } else {
-                    res.status(400).json({error: "User doesn't exist"})
-                }
-            } catch (e) {
-                res.status(500).json({error: "Internal Server Error"})
-            }
+        const todo = await getTodoByUserId(req.id);
+        if (user.length > 0) {
+            res.status(200).json(todo)
+        } else {
+            res.status(400).json({error: "There are no todos associated to this user"})
         }
     });
 

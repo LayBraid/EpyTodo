@@ -5,17 +5,12 @@ module.exports = (req, res, next) => {
     if (!authHeader) {
         return res.status(401).json({error: 'No token provided'});
     }
-    const parts = authHeader.split(' ');
-    if (parts.length !== 2) {
-        return res.status(401).json({error: 'Token error'});
-    }
+    const parts = authHeader.split(' ')[0];
     jwt.verify(parts, process.env.SECRET, (err, decoded) => {
         if (err) {
-            return res.status(401).json({error: 'Token invalid'});
+            return res.status(401).json({error: 'Invalid token'});
         }
-        if (decoded["id"] !== req.user) {
-            return res.status(401).json({error: 'Token invalid'});
-        }
+        req.id = decoded["id"]
         next();
     });
 };

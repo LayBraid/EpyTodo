@@ -34,6 +34,10 @@ async function getTodoId(id) {
     return (await (await db).execute('SELECT * FROM `todo` WHERE id = ?', [id]))[0];
 }
 
+async function getTodoByUserId(id) {
+    return (await (await db).execute('SELECT * FROM `todo` WHERE user_id = ?', [id]))[0];
+}
+
 async function updateTodoId(id, title, description, due_time, user_id, status) {
     try {
         await (await db).execute('UPDATE `todo` SET title = ?, description = ?, due_time = ?, user_id = ?, status = ? WHERE id = ?', [title, description, due_time, user_id, status, id]);
@@ -50,5 +54,6 @@ module.exports = {
     delTodoId,
     getTodoId,
     updateTodoId,
-    checkTodoExistId
+    checkTodoExistId,
+    getTodoByUserId
 }

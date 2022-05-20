@@ -1,4 +1,5 @@
-const {addUser, checkUserExist} = require("../user/user.query");
+const {addUser, checkUserExist, getUserById} = require("../user/user.query");
+const jwt = require("jsonwebtoken")
 
 async function auth(app) {
     app.post('/register', async function register(req, res) {
@@ -18,6 +19,17 @@ async function auth(app) {
             }
         } else {
             return ("510: Bad email address")
+        }
+    });
+    app.post('/login', async function register(req, res) {
+        const mail = req.body.email
+        const password = req.body.password
+        const user = await getUserById(mail);
+        if (user[0].password === password) {
+            const token = jwt.sign({email:mail, id:user[0].id}, process.env.SECRET, {expiresIn: '60s'});
+            res.status(200).json({token})
+        } else {
+            res.status(400).json({error: "Wrong password"})
         }
     });
 }

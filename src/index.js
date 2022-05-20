@@ -20,19 +20,19 @@ app.use(bodyParser.json())
 //Todo login, get user todo and token
 
 //app.post('/login', auth.login)
-app.post('/register', auth_check, auth.register)
+app.post('/register', auth.register)
 
-app.put('/user/:id', auth_check, user.updateUser)
-app.get('/user/:id', auth_check, user.getUserById)
-app.delete('/user/:id', auth_check, user.deleteUser)
-app.get('/user', auth_check, user.getCurrentUser)
+app.put('/user/:id', user.updateUser)
+app.get('/user/:id', user.getUserById)
+app.delete('/user/:id', user.deleteUser)
+app.get('/user', user.getCurrentUser)
 //app.get('/user/todos/', auth_check, user.getTodoCurrentUser)
 
-app.post('/todos', auth_check, todo.addTodoPlayer)
-app.get('/todos', auth_check, todo.getAllTodosList)
-app.delete('/todos/:id', auth_check, notFoundTodo, todo.delTodoById)
-app.get('/todos/:id', auth_check, notFoundTodo, todo.getTodoById)
-app.put('/todos/:id', auth_check, notFoundTodo, todo.updateTodoById)
+app.post('/todos', todo.addTodoPlayer)
+app.get('/todos', todo.getAllTodosList)
+app.delete('/todos/:id', notFoundTodo, todo.delTodoById)
+app.get('/todos/:id', notFoundTodo, todo.getTodoById)
+app.put('/todos/:id', notFoundTodo, todo.updateTodoById)
 
 app.listen(port, () => {
     console.log('Example app listening on port ' + port)

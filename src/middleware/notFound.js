@@ -1,6 +1,6 @@
 const {getTodoId} = require("../routes/todos/todos.query");
 
-module.exports = (req, res, next) => {
+async function notFoundTodo(req, res, next) {
     const id = req.params.id;
 
     const todoId = getTodoId(id);
@@ -10,4 +10,8 @@ module.exports = (req, res, next) => {
     } else {
         res.status(400).json({error: "Todo not exist"})
     }
-};
+}
+
+module.exports = {
+    notFoundTodo
+}

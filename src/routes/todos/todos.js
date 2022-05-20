@@ -8,6 +8,8 @@ const {
     checkTodoExistId
 } = require('./todos.query');
 
+//TODO get todo check if user is in db
+
 async function addTodoPlayer(req, res) {
     const title = req.body.title;
     const description = req.body.description;

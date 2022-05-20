@@ -1,6 +1,27 @@
 const {getTodoId} = require("../routes/todos/todos.query");
+const db = require('../config/db')
 
-module.exports = (req, res, next) => {
+async function user(req, res, next) {
+    const id = req.params.id;
+
+    if (id === undefined)
+        res.status(400).json({error: "Bad request"})
+    try {
+        let sql = "SELECT * FROM user WHERE id = " + id;
+        const user = (await (await db).execute(sql))[0]
+        if (user.length > 0) {
+            next();
+        } else {
+            res.status(404).json({error: "User not found"})
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({error: "Internal Server Error"})
+    }
+    next()
+};
+
+function todo(req, res, next) {
     const id = req.params.id;
 
     const todoId = getTodoId(id);
@@ -8,6 +29,11 @@ module.exports = (req, res, next) => {
     if (todoId.length > 0) {
         next();
     } else {
-        res.status(400).json({error: "Todo not exist"})
+        res.status(400).json({error: "Todo doesn't exist"})
     }
 };
+
+module.exports = {
+    user,
+    todo,
+}

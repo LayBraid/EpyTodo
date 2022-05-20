@@ -20,13 +20,9 @@ async function addUser(name, mail, firstname, password) {
     }
 }
 
-async function updateUserDb(name, mail, firstname, password, id) {
-    try {
-        await (await db).execute('UPDATE `user` SET name = ?, email = ?, firstname = ?, password = ? WHERE id = ?', [name, mail, firstname, password, id]);
-        return true;
-    } catch (e) {
-        return false;
-    }
+async function updateUserDb(res, name, mail, firstname, password, id) {
+    await (await db).execute('UPDATE `user` SET name = ?, email = ?, firstname = ?, password = ? WHERE id = ?', [name, mail, firstname, password, id]);
+    res.status(200).json({success: "User updated"})
 }
 
 async function getUserTodosDb(id) {

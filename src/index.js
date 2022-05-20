@@ -2,9 +2,6 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-const auth_check = require('./middleware/auth');
-const {notFoundTodo} = require('./middleware/notFound');
-
 var bodyParser = require('body-parser')
 
 app.use(express.raw());

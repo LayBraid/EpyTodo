@@ -9,19 +9,19 @@ async function user(app) {
         if (user.length > 0) {
             res.status(200).json(user)
         } else {
-            res.status(400).json({error: "User doesn't exist"})
+            res.status(404).json({error: "User doesn't exist"})
         }
     });
 
     app.get('/user/todos', auth, async (req, res) => {
         if (checkUserExist(req.id) == false) {
-            res.status(400).json({error: "This user does not exist"});
+            res.status(404).json({error: "This user does not exist"});
         }
         const todo = await getTodoByUserId(req.id);
         if (user.length > 0) {
             res.status(200).json(todo)
         } else {
-            res.status(400).json({error: "There are no todos associated to this user"})
+            res.status(404).json({error: "There are no todos associated to this user"})
         }
     });
 
@@ -38,7 +38,7 @@ async function user(app) {
             if (await updateUser(name, mail, firstname, password, id)) {
                 res.status(200).json({success: "User updated"})
             } else {
-                res.status(400).json({error: "User doesn't exist"})
+                res.status(404).json({error: "User doesn't exist"})
             }
         } catch (e) {
             res.status(500).json({error: "Internal Server Error"})
@@ -51,7 +51,7 @@ async function user(app) {
             if (allUsers.length > 0) {
                 res.status(200).json(allUsers)
             } else {
-                res.status(400).json({error: "There are no users yet !"})
+                res.status(404).json({error: "There are no users yet !"})
             }
         } catch (e) {
             res.status(500).json({error: "Internal Server Error"})
@@ -68,7 +68,7 @@ async function user(app) {
             if (user.length > 0) {
                 res.status(200).json(user)
             } else {
-                res.status(400).json({error: "User doesn't exist"})
+                res.status(404).json({error: "User doesn't exist"})
             }
         } catch (e) {
             res.status(500).json({error: "Internal Server Error"})
@@ -84,7 +84,7 @@ async function user(app) {
             if (await deleteUser(id)) {
                 res.status(200).json({success: "User deleted"})
             } else {
-                res.status(400).json({error: "User doesn't exist"})
+                res.status(404).json({error: "User doesn't exist"})
             }
         } catch (e) {
             res.status(500).json({error: "Internal Server Error"})

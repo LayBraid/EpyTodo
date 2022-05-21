@@ -26,7 +26,8 @@ async function user(app) {
         const password = req.body.password
         try {
             await updateUser(name, mail, firstname, password, id)
-            res.status(200).json({success: "User updated"})
+            const user = await getUserById(id)
+            res.status(200).json(user)
         } catch (e) {
             res.status(500).json({error: "Internal server error"})
         }
@@ -46,7 +47,7 @@ async function user(app) {
         const id = req.params.id;
         try {
             await deleteUser(id)
-            res.status(200).json({success: "User deleted"})
+            res.status(200).json({success: "Successfully deleted record number: ${id}"})
         } catch (e) {
             res.status(500).json({error: "Internal server error"})
         }

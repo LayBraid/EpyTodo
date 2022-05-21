@@ -43,10 +43,8 @@ async function todo(app) {
 
     app.delete("/todos/:id", auth, notFoundTodo, async function delTodoById(req, res) {
         const id = req.params.id;
-        if (await delTodoId(id))
-            res.status(200).json({success: "Todo deleted"})
-        else
-            res.status(400).json({error: "Todo not deleted"})
+        await delTodoId(id)
+        res.status(200).json({success: "Successfully deleted recorder number: ${id}"})
     });
 
     app.get('/todos/:id', auth, notFoundTodo, async function getTodoById(req, res) {
@@ -55,7 +53,7 @@ async function todo(app) {
         res.status(200).json(todoId)
     });
 
-    app.put('/todos/:id', async function updateTodoById(req, res) {
+    app.put('/todos/:id', auth, notFoundTodo, async function updateTodoById(req, res) {
         const id = req.params.id;
         const title = req.body.title;
         const description = req.body.description;
@@ -65,10 +63,9 @@ async function todo(app) {
 
         if (id === undefined || title === undefined || description === undefined || due_time === undefined || user_id === undefined || status === undefined)
             res.status(400).json({error: "Bad request"})
-        if (await updateTodoId(id, title, description, due_time, user_id, status))
-            res.status(200).json({success: "Todo updated"})
-        else
-            res.status(400).json({error: "Todo not updated"})
+        await updateTodoId(id, title, description, due_time, user_id, status)
+        const todo = await getTodoId(id)
+        res.status(200).json(todo)
     });
 }
 

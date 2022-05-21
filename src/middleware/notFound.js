@@ -3,7 +3,7 @@ const {getUserById} = require("../routes/user/user.query")
 const db = require('../config/db')
 
 async function userExists(req, res, next) {
-    if (req.body.email !== undefined)
+    if (req.body.email !== undefined && req.params.id === undefined)
         req.id = req.body.email
     if (req.id === undefined) {
         if (req.params.id === undefined) {

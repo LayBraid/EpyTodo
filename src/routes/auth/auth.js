@@ -35,7 +35,7 @@ async function auth(app) {
         if (user[0].password === password) {
             createToken(res, mail, id)
         } else {
-            res.status(400).json({error: "Wrong password"})
+            res.status(400).json({error: "Invalid Credentials"})
         }
     });
 }

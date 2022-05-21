@@ -10,6 +10,7 @@ async function createToken(res, mail, id) {
 
 async function auth(app) {
     app.post('/register', async function register(req, res) {
+        const bcrypt = require('bcryptjs')
         const name = req.body.name
         const mail = req.body.email
         const firstname = req.body.firstname
@@ -20,6 +21,9 @@ async function auth(app) {
                 const new_user = await getUserById(mail)
                 const id = new_user[0].id
                 createToken(res, mail, id)
+                let salt = await bcrypt.genSalt(10)
+                let hash = await bcrypt.hash(req.body.password, salt)
+                console.log(hash)
             } else {
                 res.status(400).json({error: "Account already exists"})
             }

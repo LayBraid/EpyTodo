@@ -14,7 +14,7 @@ async function user(app) {
         if (todo.length > 0) {
             res.status(200).json(todo)
         } else {
-            res.status(202).json({success: "The user exsists but doesn't have any tasks"})
+            res.status(202).json({success: "The user exists but doesn't have any tasks yet"})
         }
     });
 
@@ -28,7 +28,7 @@ async function user(app) {
             await updateUser(name, mail, firstname, password, id)
             res.status(200).json({success: "User updated"})
         } catch (e) {
-            res.status(500).json({error: "Internal Server Error"})
+            res.status(500).json({error: "Internal server error"})
         }
     });
 
@@ -38,7 +38,7 @@ async function user(app) {
             const user = await getUserById(id);
             res.status(200).json(user)
         } catch (e) {
-            res.status(500).json({error: "Internal Server Error"})
+            res.status(500).json({error: "Internal server error"})
         }
     });
 
@@ -48,7 +48,7 @@ async function user(app) {
             await deleteUser(id)
             res.status(200).json({success: "User deleted"})
         } catch (e) {
-            res.status(500).json({error: "Internal Server Error"})
+            res.status(500).json({error: "Internal server error"})
         }
     });
 }

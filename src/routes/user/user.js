@@ -1,7 +1,6 @@
-const {deleteUser, getAllUsers, getUserById, updateUser, checkUserExist} = require("./user.query");
+const {deleteUser, getUserById, updateUser} = require("./user.query");
 const {getTodoByUserId} = require("../todos/todos.query")
 const {userExists} = require("../../middleware/notFound")
-const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 
 async function user(app) {
@@ -10,12 +9,12 @@ async function user(app) {
         res.status(200).json(user)
     });
 
-    app.get('/user/todos', userExists, auth, async (req, res) => {
+    app.get('/user/todos', auth, userExists, async (req, res) => {
         const todo = await getTodoByUserId(req.id);
-        if (user.length > 0) {
+        if (todo.length > 0) {
             res.status(200).json(todo)
         } else {
-            res.status(404).json({error: "There are no todos associated to this user"})
+            res.status(202).json({success: "The user exsists but doesn't have any tasks"})
         }
     });
 

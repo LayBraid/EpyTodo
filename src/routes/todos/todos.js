@@ -5,8 +5,9 @@ const {
     delTodoId,
     getTodoId,
     updateTodoId,
-    checkTodoExistId
 } = require('./todos.query');
+const {notFoundTodo} = require("../../middleware/notFound")
+const auth = require("../../middleware/auth");
 
 //TODO get todo check if user is in db
 
@@ -31,43 +32,27 @@ async function todo(app) {
         }
     });
 
-    app.get('/todos', async function getAllTodosList(req, res) {
+    app.get('/todos', auth, async function getAllTodosList(req, res) {
         try {
             const allTodos = await getAllTodos();
-            if (allTodos.length > 0) {
-                res.status(200).json(allTodos)
-            } else {
-                res.status(400).json({error: "Todo not exist"})
-            }
+            res.status(200).json(allTodos)
         } catch (e) {
             res.status(500).json({error: "Internal Server Error"})
         }
     });
 
-    app.delete("/todos/:id", async function delTodoById(req, res) {
+    app.delete("/todos/:id", auth, notFoundTodo, async function delTodoById(req, res) {
         const id = req.params.id;
-
-        if (id === undefined)
-            res.status(400).json({error: "Bad request"})
-        if (await checkTodoExistId(id) === false)
-            res.status(400).json({error: "Todo not exist"})
         if (await delTodoId(id))
             res.status(200).json({success: "Todo deleted"})
         else
             res.status(400).json({error: "Todo not deleted"})
     });
 
-    app.get('/todos/:id', async function getTodoById(req, res) {
+    app.get('/todos/:id', auth, notFoundTodo, async function getTodoById(req, res) {
         const id = req.params.id;
-
-        if (id === undefined)
-            res.status(400).json({error: "Bad request"})
         const todoId = await getTodoId(id);
-        if (todoId.length > 0) {
-            res.status(200).json(todoId)
-        } else {
-            res.status(400).json({error: "Todo not exist"})
-        }
+        res.status(200).json(todoId)
     });
 
     app.put('/todos/:id', async function updateTodoById(req, res) {

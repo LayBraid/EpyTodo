@@ -3,6 +3,8 @@ const {getUserById} = require("../routes/user/user.query")
 const db = require('../config/db')
 
 async function userExists(req, res, next) {
+    if (req.body.email !== undefined)
+        req.id = req.body.email
     if (req.id === undefined) {
         if (req.params.id === undefined) {
             return res.status(400).json({error: "Bad request"})
@@ -11,6 +13,8 @@ async function userExists(req, res, next) {
         }
     }
     const user = await getUserById(req.id);
+    if (user === null)
+        return res.status(400).json({error: "Invalid id"})
     if (user.length > 0) {
         next();
     } else {
@@ -20,13 +24,17 @@ async function userExists(req, res, next) {
 
 async function notFoundTodo(req, res, next) {
     const id = req.params.id;
-
-    const todoId = getTodoId(id);
-
+    if (id === undefined) {
+        res.status(400).json({error: "Bad request"})
+    }
+    const todoId = await getTodoId(id);
+    if (todoId === null) {
+        return res.status(400).json({error: "Invalid id"})
+    }
     if (todoId.length > 0) {
         next();
     } else {
-        res.status(400).json({error: "Todo not exist"})
+        res.status(400).json({error: "Todo doesn't exist"})
     }
 }
 

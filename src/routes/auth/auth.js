@@ -1,5 +1,7 @@
 const {addUser, checkUserExist, getUserById} = require("../user/user.query");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { checkTodoExistId } = require("../todos/todos.query");
+const { userExists } = require("../../middleware/notFound");
 
 async function auth(app) {
     app.post('/register', async function register(req, res) {
@@ -21,7 +23,7 @@ async function auth(app) {
             return ("510: Bad email address")
         }
     });
-    app.post('/login', async function register(req, res) {
+    app.post('/login', userExists, async function register(req, res) {
         const mail = req.body.email
         const password = req.body.password
         const user = await getUserById(mail);

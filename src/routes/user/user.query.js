@@ -1,5 +1,4 @@
 const db = require('../../config/db');
-const jwt = require('jsonwebtoken');
 
 async function checkUserExist(id) {
     let param = "id"
@@ -36,10 +35,11 @@ async function getAllUsers() {
 async function getUserById(id) {
     let param = "id";
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(id)) {
-        if (await checkUserExist(id) === true) {
-            param = "email";
-            id = '\'' + id + '\''
-        }
+        param = "email";
+        id = '\'' + id + '\''
+    }
+    if (param == "id" && /[0-9]/.test(id) == false) {
+        return null
     }
     const sql = 'SELECT * FROM `user` WHERE ' + param + ' = ' + id
     return (await (await db).execute(sql))[0];

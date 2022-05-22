@@ -11,11 +11,7 @@ async function user(app) {
 
     app.get('/user/todos', auth, userExists, async (req, res) => {
         const todo = await getTodoByUserId(req.id);
-        if (todo.length > 0) {
-            res.status(200).json(todo)
-        } else {
-            res.status(202).json({success: "The user exists but doesn't have any tasks yet"})
-        }
+        res.status(200).json(todo)
     });
 
     app.put('/users/:id', userExists, auth, async (req, res) => {
@@ -29,7 +25,7 @@ async function user(app) {
             const user = await getUserById(id)
             res.status(200).json(user)
         } catch (e) {
-            res.status(500).json({error: "Internal server error"})
+            res.status(500).json({msg: "Internal server error"})
         }
     });
 
@@ -39,7 +35,7 @@ async function user(app) {
             const user = await getUserById(id);
             res.status(200).json(user)
         } catch (e) {
-            res.status(500).json({error: "Internal server error"})
+            res.status(500).json({msg: "Internal server error"})
         }
     });
 
@@ -47,9 +43,9 @@ async function user(app) {
         const id = req.params.id;
         try {
             await deleteUser(id)
-            res.status(200).json({success: "Successfully deleted record number: ${id}"})
+            res.status(200).json({msg: "Successfully deleted record number: ${id}"})
         } catch (e) {
-            res.status(500).json({error: "Internal server error"})
+            res.status(500).json({msg: "Internal server error"})
         }
     });
 }

@@ -3,8 +3,8 @@ CREATE DATABASE epytodo;
 
 use epytodo;
 
-ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'password';
-flush privileges;
+CREATE USER 'YOUR_USERNAME'@'%' IDENTIFIED WITH mysql_native_password BY 'YOUR_PASSWORD';
+GRANT ALL ON epytodo.* TO 'YOUR_USERNAME'@'%';
 
 CREATE TABLE IF NOT EXISTS user (
     id int NOT NULL AUTO_INCREMENT KEY,

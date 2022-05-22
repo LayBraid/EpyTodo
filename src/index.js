@@ -4,6 +4,8 @@ const port = 3000
 
 var bodyParser = require('body-parser')
 
+require('dotenv').config()
+
 app.use(express.raw());
 
 app.use(bodyParser.urlencoded({ extended: false }))

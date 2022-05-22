@@ -1,3 +1,4 @@
+const { status } = require('express/lib/response');
 const db = require('../../config/db');
 
 async function checkTodoExist(title) {
@@ -8,9 +9,9 @@ async function checkTodoExistId(id) {
     return (await (await db).execute('SELECT * FROM `todo` WHERE id = ?', [id]))[0].length > 0;
 }
 
-async function addTodo(title, description, due_time, user_id) {
+async function addTodo(title, description, due_time, user_id, status) {
     try {
-        await (await db).execute('INSERT INTO `todo` (title, description, due_time, user_id) VALUES (?, ?, ?, ?)', [title, description, due_time, user_id]);
+        await (await db).execute('INSERT INTO `todo` (title, description, due_time, user_id, status) VALUES (?, ?, ?, ?, ?)', [title, description, due_time, user_id, status]);
         return true;
     } catch (e) {
         return false;
@@ -19,6 +20,10 @@ async function addTodo(title, description, due_time, user_id) {
 
 async function getAllTodos() {
     return (await (await db).execute('SELECT * FROM `todo`'))[0];
+}
+
+async function getLastTodoAdded() {
+    return (await (await db).execute('SELECT * FROM `todo` ORDER BY id DESC LIMIT 1'))[0];
 }
 
 async function delTodoId(id) {
@@ -55,5 +60,6 @@ module.exports = {
     getTodoId,
     updateTodoId,
     checkTodoExistId,
-    getTodoByUserId
+    getTodoByUserId,
+    getLastTodoAdded
 }

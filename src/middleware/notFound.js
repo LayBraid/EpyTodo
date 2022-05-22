@@ -7,34 +7,34 @@ async function userExists(req, res, next) {
         req.id = req.body.email
     if (req.id === undefined) {
         if (req.params.id === undefined) {
-            return res.status(400).json({error: "Bad parameter"})
+            return res.status(400).json({msg: "Bad parameter"})
         } else {
             req.id = req.params.id
         }
     }
     const user = await getUserById(req.id);
     if (user === null)
-        return res.status(400).json({error: "Bad parameter"})
+        return res.status(400).json({msg: "Bad parameter"})
     if (user.length > 0) {
         next();
     } else {
-        return res.status(404).json({error: "Not found"})
+        return res.status(404).json({msg: "Not found"})
     }
 }
 
 async function notFoundTodo(req, res, next) {
     const id = req.params.id;
     if (id === undefined) {
-        res.status(400).json({error: "Bad parameter"})
+        res.status(400).json({msg: "Bad parameter"})
     }
     const todoId = await getTodoId(id);
     if (todoId === null) {
-        return res.status(400).json({error: "Bad parameter"})
+        return res.status(400).json({msg: "Bad parameter"})
     }
     if (todoId.length > 0) {
         next();
     } else {
-        res.status(400).json({error: "Not found"})
+        res.status(400).json({msg: "Not found"})
     }
 }
 

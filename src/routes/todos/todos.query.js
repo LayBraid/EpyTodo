@@ -22,6 +22,10 @@ async function getAllTodos() {
     return (await (await db).execute('SELECT * FROM `todo`'))[0];
 }
 
+async function getLastTodoAdded() {
+    return (await (await db).execute('SELECT * FROM `todo` ORDER BY id DESC LIMIT 1'))[0];
+}
+
 async function delTodoId(id) {
     try {
         await (await db).execute('DELETE FROM `todo` WHERE id = ?', [id]);
@@ -56,5 +60,6 @@ module.exports = {
     getTodoId,
     updateTodoId,
     checkTodoExistId,
-    getTodoByUserId
+    getTodoByUserId,
+    getLastTodoAdded
 }

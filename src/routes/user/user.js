@@ -25,7 +25,7 @@ async function user(app) {
             const user = await getUserById(id)
             res.status(200).json(user)
         } catch (e) {
-            res.status(500).json({error: "Internal server error"})
+            res.status(500).json({msg: "Internal server error"})
         }
     });
 
@@ -35,7 +35,7 @@ async function user(app) {
             const user = await getUserById(id);
             res.status(200).json(user)
         } catch (e) {
-            res.status(500).json({error: "Internal server error"})
+            res.status(500).json({msg: "Internal server error"})
         }
     });
 
@@ -43,9 +43,9 @@ async function user(app) {
         const id = req.params.id;
         try {
             await deleteUser(id)
-            res.status(200).json({success: "Successfully deleted record number: ${id}"})
+            res.status(200).json({msg: "Successfully deleted record number: ${id}"})
         } catch (e) {
-            res.status(500).json({error: "Internal server error"})
+            res.status(500).json({msg: "Internal server error"})
         }
     });
 }

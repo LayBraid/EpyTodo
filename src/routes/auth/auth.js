@@ -21,7 +21,7 @@ async function auth(app) {
                 const id = new_user[0].id
                 createToken(res, mail, id)
             } else {
-                res.status(400).json({error: "Account already exists"})
+                res.status(400).json({msg: "Account already exists"})
             }
         } else {
             return ("510: Bad parameter")
@@ -35,7 +35,7 @@ async function auth(app) {
         if (user[0].password === password) {
             createToken(res, mail, id)
         } else {
-            res.status(400).json({error: "Invalid Credentials"})
+            res.status(400).json({msg: "Invalid Credentials"})
         }
     });
 }

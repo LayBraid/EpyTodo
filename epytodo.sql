@@ -21,6 +21,6 @@ CREATE TABLE IF NOT EXISTS todo (
     description varchar(255) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     due_time DATETIME NOT NULL,
-    status enum('no_started','todo','doing','done') NOT NULL DEFAULT 'no_started',
+    status enum('not started','todo','in progress','done') NOT NULL DEFAULT 'not started',
     user_id int UNSIGNED NOT NULL
 );

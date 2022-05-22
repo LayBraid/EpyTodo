@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:epytodo/getUserId.dart';
 import 'package:intl/intl.dart';
 import 'package:epytodo/mainScreen.dart';
 import 'package:flutter/material.dart';
@@ -125,12 +126,11 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     if (error == Errors.incompleteForm) {
       return;
     }
-    print(page);
     String req = jsonEncode({
       'title': title,
       'description': description,
       'due_time': DateFormat('yyyy-MM-dd hh:mm:ss').format(dueTime),
-      'user_id': 15,
+      'user_id': await getUserId(token),
       'status': page,
     });
     final http.Response res = await http.post(
@@ -141,7 +141,6 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       },
       body: req,
     );
-    print(res.body);
     fetchFunc(token);
     Navigator.pop(context);
   }

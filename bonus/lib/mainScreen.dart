@@ -82,8 +82,14 @@ class _MainScreenState extends State<MainScreen> {
       body: Column(
         children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 100.0, vertical: 100.0),
+            padding: const EdgeInsets.all(25.0),
+            child: Text(
+              "EpyToDo",
+              style: TextStyle(fontSize: 40),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 100.0),
             child: Row(
               children: [
                 StatusRow(
@@ -124,16 +130,17 @@ class _MainScreenState extends State<MainScreen> {
               ],
             ),
           ),
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(100.0),
-            child: ElevatedButton(
-              onPressed: (() {
-                Navigator.pushReplacementNamed(context, '/login');
-              }),
-              child: Text(
-                "Log out",
-                style: TextStyle(fontSize: 30),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.all(100.0),
+              child: ElevatedButton(
+                onPressed: (() {
+                  Navigator.pushReplacementNamed(context, '/login');
+                }),
+                child: Text(
+                  "Log out",
+                  style: TextStyle(fontSize: 30),
+                ),
               ),
             ),
           ),

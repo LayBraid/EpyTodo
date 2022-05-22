@@ -16,7 +16,6 @@ Future<List<Todo>> getTodos(token, context) async {
         arguments:
             ScreenArguments(title: 'Login', message: token, function: () {}));
   }
-  ;
   List<dynamic> resJson = jsonDecode(res.body);
   List<Todo> todos = List.generate(resJson.length, (index) {
     return Todo(
@@ -29,5 +28,6 @@ Future<List<Todo>> getTodos(token, context) async {
       user_id: resJson[index]['user_id'],
     );
   });
+  print("success");
   return todos;
 }

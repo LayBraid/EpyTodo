@@ -48,6 +48,7 @@ async function updateTodoId(id, title, description, due_time, user_id, status) {
         await (await db).execute('UPDATE `todo` SET title = ?, description = ?, due_time = ?, user_id = ?, status = ? WHERE id = ?', [title, description, due_time, user_id, status, id]);
         return true;
     } catch (e) {
+        console.log(e)
         return false;
     }
 }

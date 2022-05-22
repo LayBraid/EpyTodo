@@ -64,7 +64,6 @@ async function todo(app) {
         const due_time = req.body.due_time;
         const user_id = req.body.user_id;
         const status = req.body.status;
-
         if (id === undefined || title === undefined || description === undefined || due_time === undefined || user_id === undefined || status === undefined)
             res.status(400).json({msg: "Bad request"})
         await updateTodoId(id, title, description, due_time, user_id, status)

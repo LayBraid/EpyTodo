@@ -22,5 +22,6 @@ CREATE TABLE IF NOT EXISTS todo (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     due_time DATETIME NOT NULL,
     status enum('not started','todo','in progress','done') NOT NULL DEFAULT 'not started',
-    user_id int UNSIGNED NOT NULL
+    user_id int NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id)
 );

@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/EpitechPromo2026/B-WEB-200-LYN-2-1-epytodo-clement.loeuillet#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "hash": "^0.2.1",
     "install": "^0.13.0",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",

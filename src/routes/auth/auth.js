@@ -17,13 +17,12 @@ async function auth(app) {
         const password = req.body.password
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
             if (await checkUserExist(mail) === false) {
-                await addUser(name, mail, firstname, password)
+                let salt = await bcrypt.genSalt(10)
+                let hash = await bcrypt.hash(password, salt)
+                await addUser(name, mail, firstname, hash)
                 const new_user = await getUserById(mail)
                 const id = new_user[0].id
                 createToken(res, mail, id)
-                let salt = await bcrypt.genSalt(10)
-                let hash = await bcrypt.hash(req.body.password, salt)
-                return hash
             } else {
                 res.status(400).json({error: "Account already exists"})
             }
@@ -37,11 +36,8 @@ async function auth(app) {
         const password = req.body.password
         const user = await getUserById(mail);
         const id = user[0].id
-        let compare = await bcrypt.compare(user[0].password, hash)
-        if (compare = true) {
-            createToken(res, mail, id)
-        }
-        if (user[0].password === password) {
+        let compare = await bcrypt.compare(password, user[0].password)
+        if (compare === true) {
             createToken(res, mail, id)
         } else {
             res.status(400).json({error: "Invalid Credentials"})
